@@ -5,34 +5,45 @@
 #include <malloc.h>
 
 TREE {
-        int value;
+        char* value;
+        int nmb;
         TREE *left, *right;
 };
 
 
-TREE* Create(int value) {
+TREE* create(char* value,int number) {
     TREE *res;
     res = (TREE*)malloc(sizeof(TREE));
 
     res -> value = value;
+    res -> nmb = number;
     res -> left = NULL;
     res -> right = NULL;
 
     return res;
 }
 
-void Insert(TREE *T, TREE *cur) {
-    if (T -> value > cur -> value)
-        if (T -> left == NULL)
-            T -> left = cur;
-        else
-            Insert(T -> left, cur);
-    else
-    if (T -> right == NULL)
-        T -> right = cur;
-    else
-        Insert(T -> right, cur);
+void add(TREE *T, char *value, int nmb){
+    TREE *child;
+    if(T != NULL)
+    {
+        if(T->nmb * 2 == nmb) {
+            child = create(value,nmb);
+            T->left = child;
+        }
+        else if(T->nmb * 2 + 1 == nmb) {
+            child = create(value,nmb);
+            T->right = child;
+        }
+        else{
+            add(T->left,value,nmb);
+            add(T->right,value,nmb);
+
+        }
+    }
 }
+
+
 
 int Search(int value, TREE *cur) {
     if (cur -> value == value)
@@ -51,7 +62,7 @@ int Search(int value, TREE *cur) {
 }
 
 void PreOrder(TREE *T) {
-    printf("%d", T -> value);
+    printf("%s\n", T -> value);
 
     if (T -> left != NULL)
         PreOrder(T -> left);

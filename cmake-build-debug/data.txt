@@ -1,0 +1,7 @@
+1_Is this car made in Germany?
+2_Was the creator of this brand Adolf Hitler?
+3_Is this car made in Italy?
+4_Is this Volkswagen?
+5_Is this Porsche?
+6_Has it got a horse on the logo?
+7_Is this car made America?
