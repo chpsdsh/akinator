@@ -16,6 +16,26 @@ int getnum(char *str){
     res[i] = '\0';
     return atoi(res);
 }
+
+void getAnswer(char *str){
+    int ind = 0, ressize = 0;
+    char *res = (char*) malloc(sizeof(char));
+
+    while(str[ind] != '?')
+        ind++;
+
+    for (int i = ind-1; str[i] != ' '; i--){
+        res[ressize++] = str[i];
+        realloc(res,ressize*sizeof(char));
+        res[ressize] = '\0';
+    }
+    printf("It is");
+
+    for(int i = strlen(res); i >= 0; i--)
+        printf("%c",res[i]);
+
+}
+
 char *getQuestion(char *str){
     int ind = 0, ressize = 0;
     char *res = (char*) malloc(sizeof(char));
@@ -33,6 +53,31 @@ char *getQuestion(char *str){
 
     return res;
 }
+void Game(TREE *T){
+    int game = 1;
+    char answer[4];
+    puts("Answer only yes/no");
+    while(game){
+        printf("%s\n",T->value);
+        puts("Your answer:");
+        scanf("%s",&answer);
+        if(strcmp(answer,"yes")==0){
+            if(T->left)
+                T = T->left;
+            else{
+                getAnswer(T->value);
+                exit(0);
+            }
+
+        }
+        else if(strcmp(answer,"no") == 0){
+            if(T->right)
+                T = T->right;
+            else
+
+        }
+    }
+}
 
 void FileToTree(TREE *T, FILE *file){
     char buffer[256];
@@ -42,8 +87,10 @@ void FileToTree(TREE *T, FILE *file){
     while(fgets(buffer,sizeof(buffer),file) != NULL){
         add(T, getQuestion(buffer), getnum(buffer));
     }
-    PreOrder(T);
+    printf("%s",T->left->value);
+    Game(T);
 }
+
 
 
 int main() {
@@ -58,6 +105,7 @@ int main() {
     }
 
     FileToTree(T,file);
+
     fclose(file);
     return 0;
 }
