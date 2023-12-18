@@ -1,5 +1,0 @@
-0 0 pidor?
-1 0 polupidor?
-1 1 natural?
-2 0
-2 1
