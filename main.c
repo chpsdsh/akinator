@@ -55,22 +55,33 @@ char *getQuestion(char *str){
     return res;
 }
 
-char* inttostr(int num){
-    char tmp;
-    char *res = (char*) malloc(sizeof(char));
-    int ressize = 1;
-    for(int i = 0; num!=0; i++){
-        res[i] = '0' + num % 10;
-        num /= 10;
-        ressize++;
-        realloc(res,ressize*sizeof(char));
+char* inttostr(int num) {
+    char *res = (char*) malloc(sizeof(char) * 12); // Assuming a maximum of 12 digits for an int
+    int ressize = 0;
+
+    // Handle the case when num is 0 separately
+    if (num == 0) {
+        res[0] = '0';
+        res[1] = '\0';
+        return res;
     }
 
-    res[ressize-1] = '\0';
-    for(int i = 0; i < strlen(res)/2; i++){
-        tmp = res[i];
-        res[i] = res[strlen(res) - 1 - i];
-        res[strlen(res) - 1 - i] = tmp;
+    // Process each digit in the number
+    while (num != 0) {
+        res[ressize] = '0' + num % 10;
+        num /= 10;
+        ressize++;
+        res = (char*) realloc(res, sizeof(char) * (ressize + 1));
+    }
+
+    // Null-terminate the string
+    res[ressize] = '\0';
+
+    // Reverse the string
+    for (int i = 0; i < ressize / 2; i++) {
+        char tmp = res[i];
+        res[i] = res[ressize - 1 - i];
+        res[ressize - 1 - i] = tmp;
     }
 
     return res;
@@ -121,7 +132,12 @@ char *getstring(char*str){
 }
 
 char *createans(int num, char *answer, int flag){
+    puts("[]");
+    printf("%s",inttostr(num));
+
+    printf("%d",num);
     char *res = inttostr(num);
+    printf("%s",res);
     if (flag == 1){
         strcat(res,"_Is this ");
         strcat(res, answer);
@@ -133,10 +149,10 @@ char *createans(int num, char *answer, int flag){
     }
     printf("%s",res);
     return res;
+    free(res);
 }
 
 void Game(TREE *T){
-    FILE *file = fopen("data.txt","a");
     int game = 1;
     char answer[4];
     puts("Answer only yes/no");
@@ -151,14 +167,13 @@ void Game(TREE *T){
                 getAnswer(T->value);
                 exit(0);
             }
-
         }
         else if(strcmp(answer,"no") == 0){
             if(T->right)
                 T = T->right;
             else{
                 printf("What did you wish for?\n");
-                char wish[256];
+                char wish[256], buffer[256];
                 scanf("%s",wish);
                 printf("Ask a question to differ it from other\n");
                 char *new_str = inttostr(T->nmb);
@@ -168,21 +183,37 @@ void Game(TREE *T){
                 printf("%s\n",new_str);
                 puts("Answer your question:");
                 scanf("%s",&answer);
+                FILE *file = fopen("data.txt","r+");
+                fseek(file, 0, SEEK_END);
+                fgets(buffer,sizeof(buffer), file);
+                fclose(file);
+                file = fopen("data.txt","a");
                 if(strcmp(answer,"yes")==0){
-                    //fputs(createans(T->nmb*2,wish,1),file);
-                    //fputs(createans(T->nmb*2+1,T->value,0),file);
-                    /*if(T->value[strlen(T->value)] != '\n')
-                        fprintf(file, "%s","\n");
-                    fprintf(file, "%s", createans(T->nmb*2,wish,1));
-                    fprintf(file, "\n%s", createans(T->nmb*2+1,T->value,0));*/
+                    if(buffer[strlen(buffer)-1]!='\n')
+                        fputs("\n",file);
+                    fputs(inttostr(T->nmb*2),file);
+                    fputs("_",file);
+                    fputs(wish,file);
+                    fputs("?",file);
+                    fputs("\n",file);
+
+                    fputs(inttostr(T->nmb*2+1),file);
+                    fputs("_",file);
+                    fputs(T->value,file);
+                    fputs("\n",file);
                 }
                 else if (strcmp(answer,"no")==0){
-                    //fputs(createans(T->nmb*2,T->value,0),file);
-                    //fputs(createans(T->nmb*2+1,wish,1),file);
-                    /*if(T->value[strlen(T->value)] != '\n')
-                        fprintf(file, "%s","\n");
-                    fprintf(file, "%s", createans(T->nmb*2,T->value,0));
-                    fprintf(file, "\n%s", createans(T->nmb*2+1,wish,1));*/
+                    if(buffer[strlen(buffer)-1]!='\n')
+                        fputs("\n",file);
+                    fputs(inttostr(T->nmb*2),file);
+                    fputs("_",file);
+                    fputs(T->value,file);
+                    fputs("\n",file);
+                    fputs(inttostr(T->nmb*2+1),file);
+                    fputs("_",file);
+                    fputs(wish,file);
+                    fputs("?",file);
+                    fputs("\n",file);
                 }
                 fclose(file);
                 exit(0);
