@@ -1,7 +1,18 @@
 1_Is this car made in Germany?
-2_Was the creator of this brand Adolf Hitler?
+2_Did the history of this company start in 1933?
 3_Is this car made in Italy?
-4_Is this Volkswagen?
+4_Was the owner of this brand Adolf Hitler?
 5_Is this Porsche?
 6_Has it got a horse on the logo?
 7_Is this car made America?
+8_Is it Volkswagen?
+9_Has this brand got M models?
+11_Has it got a strange logo?
+12_Is it Ferrari?
+13_Is it Lamborghini?
+14_Is it Chevrolet?
+15_Is it Fiat?
+18_Is it BMW?
+19_Is it Audi?
+22_Is it Skoda?
+23_Is this Mercedes?
