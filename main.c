@@ -151,7 +151,7 @@ char *createans(int nmb, char *wish, char *value, int flag){//adds new data
         if(buffer[strlen(buffer)-1]!='\n')
             fputs("\n",file);
         fputs(inttostr(nmb*2),file);
-        fputs("_Is it ",file);
+        fputs("_",file);
         fputs(value,file);
         fputs("\n",file);
         fputs(inttostr(nmb*2+1),file);
@@ -226,9 +226,8 @@ void FileToTree(TREE *T, FILE *file){//converts file to tree
         add(T, question, getnum(buffer));
     }
 
-    free(question);
-
     Game(T);
+    free(question);
 }
 
 
